@@ -32,7 +32,11 @@ export class CategoriesService {
   }
 
   async findOne(id: number) {
-    return await this.categoryRepository.findOneBy({ id });
+    const category = await this.categoryRepository.findOneBy({ id });
+
+    if (!category) throw new BadRequestException('No se encontró la categoria');
+
+    return category;
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
