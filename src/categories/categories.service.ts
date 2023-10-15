@@ -22,14 +22,29 @@ export class CategoriesService {
 
   async findAll(query: any) {
     const skip = (query.page - 1) * query.limit;
-    const [data, totalItems] = await this.categoryRepository
-      .createQueryBuilder('categories')
-      .leftJoinAndSelect('categories.questions', 'questions')
-      .skip(skip)
-      .take(query.limit)
-      .getManyAndCount();
-    const totalPages = Math.ceil(totalItems / query.limit);
-    return { data, totalItems, totalPages };
+    if (query.token) {
+      const [data, totalItems] = await this.categoryRepository
+        .createQueryBuilder('categories')
+        .leftJoinAndSelect('categories.questions', 'questions')
+        .leftJoinAndSelect('questions.results', 'results')
+        .leftJoinAndSelect('results.user', 'user')
+        .where('user.token = :token', query)
+        .skip(skip)
+        .take(query.limit)
+        .getManyAndCount();
+      const totalPages = Math.ceil(totalItems / query.limit);
+      return { data, totalItems, totalPages };
+    } else {
+      const [data, totalItems] = await this.categoryRepository
+        .createQueryBuilder('categories')
+        .leftJoinAndSelect('categories.questions', 'questions')
+
+        .skip(skip)
+        .take(query.limit)
+        .getManyAndCount();
+      const totalPages = Math.ceil(totalItems / query.limit);
+      return { data, totalItems, totalPages };
+    }
   }
 
   async findOne(id: number) {
