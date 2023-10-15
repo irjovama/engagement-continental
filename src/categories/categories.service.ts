@@ -28,7 +28,7 @@ export class CategoriesService {
         .leftJoinAndSelect('categories.questions', 'questions')
         .leftJoinAndSelect('questions.results', 'results')
         .leftJoinAndSelect('results.user', 'user')
-        .where('user.token = :token', query)
+        .where('user.token = :token or results.id is null', query)
         .skip(skip)
         .take(query.limit)
         .getManyAndCount();
@@ -38,7 +38,6 @@ export class CategoriesService {
       const [data, totalItems] = await this.categoryRepository
         .createQueryBuilder('categories')
         .leftJoinAndSelect('categories.questions', 'questions')
-
         .skip(skip)
         .take(query.limit)
         .getManyAndCount();
