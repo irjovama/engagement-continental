@@ -24,6 +24,7 @@ export class CategoriesService {
     const skip = (query.page - 1) * query.limit;
     const [data, totalItems] = await this.categoryRepository
       .createQueryBuilder('categories')
+      .leftJoinAndSelect('categories.questions', 'questions')
       .skip(skip)
       .take(query.limit)
       .getManyAndCount();
