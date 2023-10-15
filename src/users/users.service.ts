@@ -43,7 +43,10 @@ export class UsersService {
   }
 
   async findOneByToken(token: string) {
-    const user = await this.userRepository.findOneBy({ token });
+    const user = await this.userRepository
+      .createQueryBuilder('users')
+      .where('users.token = :token', { token })
+      .getOne();
 
     if (!user) throw new BadRequestException('No se encontró el usuario');
 
