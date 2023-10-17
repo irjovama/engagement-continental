@@ -4,11 +4,14 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Question } from 'src/questions/entities/question.entity';
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
+    @InjectRepository(Question)
+    private readonly questionsRepository: Repository<Question>,
   ) {}
   async create(createCategoryDto: CreateCategoryDto) {
     const category = this.categoryRepository.create(createCategoryDto);
@@ -22,28 +25,30 @@ export class CategoriesService {
 
   async findAll(query: any) {
     const skip = (query.page - 1) * query.limit;
-    if (query.token) {
-      const [data, totalItems] = await this.categoryRepository
-        .createQueryBuilder('categories')
-        .leftJoinAndSelect('categories.questions', 'questions')
+    let data2 = [];
+    const [data, totalItems] = await this.categoryRepository
+      .createQueryBuilder('categories')
+      .leftJoinAndSelect('categories.questions', 'questions')
+      .skip(skip)
+      .take(query.limit)
+      .getManyAndCount();
+    const totalPages = Math.ceil(totalItems / query.limit);
+    if (query?.token) {
+      data2 = await this.questionsRepository
+        .createQueryBuilder('questions')
         .leftJoinAndSelect('questions.results', 'results')
-        .leftJoinAndSelect('results.user', 'user')
-        .where('user.token = :token or results.id is null', query)
-        .skip(skip)
-        .take(query.limit)
-        .getManyAndCount();
-      const totalPages = Math.ceil(totalItems / query.limit);
-      return { data, totalItems, totalPages };
-    } else {
-      const [data, totalItems] = await this.categoryRepository
-        .createQueryBuilder('categories')
-        .leftJoinAndSelect('categories.questions', 'questions')
-        .skip(skip)
-        .take(query.limit)
-        .getManyAndCount();
-      const totalPages = Math.ceil(totalItems / query.limit);
-      return { data, totalItems, totalPages };
+        .leftJoin('results.user', 'user')
+        .where('user.token = :token', query)
+        .getMany();
+      for (let index in data) {
+        for (let qindex in data[index].questions) {
+          const id = data[index].questions[qindex].id;
+          const data2Question = data2.find((d2) => d2.id === id);
+          data[index].questions[qindex].results = data2Question?.results ?? [];
+        }
+      }
     }
+    return { data, totalItems, totalPages };
   }
 
   async findOne(id: number) {

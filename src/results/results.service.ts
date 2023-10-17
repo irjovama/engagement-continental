@@ -59,6 +59,16 @@ export class ResultsService {
     return { data, totalItems, totalPages };
   }
 
+  async findAllByToken(token: string) {
+    const data = await this.resultRepository
+      .createQueryBuilder('results')
+      .innerJoinAndSelect('results.user', 'user')
+      .where(' user.token = :token', { token })
+
+      .getMany();
+    return data;
+  }
+
   async findOne(id: number) {
     const result = await this.resultRepository
       .createQueryBuilder('results')
