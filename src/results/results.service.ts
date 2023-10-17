@@ -99,7 +99,7 @@ export class ResultsService {
     await this.findOne(id);
 
     try {
-      await this.resultRepository.delete(id);
+      await this.resultRepository.softDelete(id);
       return { message: 'El resultado se borro correctamente' };
     } catch (error) {
       throw new BadRequestException('No se pudo borrar el resultado');

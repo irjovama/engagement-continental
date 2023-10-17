@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 export type questionTypes = 'scale' | 'input';
 @Entity()
@@ -33,4 +34,7 @@ export class Question {
 
   @Column()
   maxLength: number;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

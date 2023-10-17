@@ -1,6 +1,12 @@
 import { Question } from 'src/questions/entities/question.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  Column,
+  DeleteDateColumn,
+} from 'typeorm';
 @Entity()
 export class Result {
   @PrimaryGeneratedColumn('increment')
@@ -14,4 +20,7 @@ export class Result {
 
   @ManyToOne(() => User, (user) => user.id)
   user: User;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

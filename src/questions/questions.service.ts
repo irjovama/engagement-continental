@@ -74,7 +74,7 @@ export class QuestionsService {
     await this.findOne(id, categoryId);
 
     try {
-      await this.questionsRepository.delete(id);
+      await this.questionsRepository.softDelete(id);
       return { message: 'Question borrada correctamente' };
     } catch (error) {
       throw new BadRequestException('No se pudo borrada la question');

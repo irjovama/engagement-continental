@@ -70,7 +70,7 @@ export class CategoriesService {
 
   async remove(id: number) {
     try {
-      await this.categoryRepository.delete(id);
+      await this.categoryRepository.softDelete(id);
       return { message: 'Categoria borrada correctamente' };
     } catch (error) {
       throw new BadRequestException('No se pudo borrar la categoria');

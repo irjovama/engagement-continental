@@ -1,5 +1,11 @@
 import { Result } from 'src/results/entities/result.entity';
-import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  Column,
+  DeleteDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -17,4 +23,7 @@ export class User {
 
   @Column()
   token: string;
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

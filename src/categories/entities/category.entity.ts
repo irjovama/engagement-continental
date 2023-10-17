@@ -1,4 +1,10 @@
-import { PrimaryGeneratedColumn, Column, OneToMany, Entity } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Entity,
+  DeleteDateColumn,
+} from 'typeorm';
 import { Question } from 'src/questions/entities/question.entity';
 @Entity()
 export class Category {
@@ -13,4 +19,7 @@ export class Category {
 
   @OneToMany(() => Question, (question) => question.category)
   questions: Question[];
+
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

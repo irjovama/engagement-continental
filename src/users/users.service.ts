@@ -65,7 +65,7 @@ export class UsersService {
 
   async remove(id: number) {
     try {
-      await this.userRepository.delete(id);
+      await this.userRepository.softDelete(id);
       return { message: 'Se eliminó correctamente el usuario' };
     } catch (error) {
       throw new BadRequestException('No se pudo eliminar el usuario');
