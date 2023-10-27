@@ -24,6 +24,9 @@ export class User {
   @Column()
   token: string;
 
+  @Column()
+  modality: string;
+
   @DeleteDateColumn()
   deleteAt: Date;
 }
