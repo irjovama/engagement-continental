@@ -11,10 +11,9 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto);
-
     try {
       createUserDto.token = await this.hashEmail(createUserDto.email);
+      const user = this.userRepository.create(createUserDto);
       const saved = await this.userRepository.save(user);
       return { message: 'Usuario creado correctamente', id: saved.id };
     } catch (error) {
@@ -55,7 +54,9 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      updateUserDto.token = await this.hashEmail(updateUserDto.email);
+      if (updateUserDto?.token) {
+        updateUserDto.token = await this.hashEmail(updateUserDto.email);
+      }
       await this.userRepository.update(id, updateUserDto);
       return { message: 'Se actualizó correctamente el usuario' };
     } catch (error) {
