@@ -1,4 +1,5 @@
 import { Category } from 'src/categories/entities/category.entity';
+import { Option } from 'src/options/entities/option.entity';
 import { Result } from 'src/results/entities/result.entity';
 import {
   Column,
@@ -7,6 +8,8 @@ import {
   ManyToOne,
   OneToMany,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 export type questionTypes = 'scale' | 'input';
 @Entity()
@@ -23,17 +26,9 @@ export class Question {
   @Column()
   content: string;
 
-  @Column()
-  type: questionTypes;
-
-  @Column()
-  minRange: number;
-
-  @Column()
-  maxRange: number;
-
-  @Column()
-  maxLength: number;
+  @ManyToMany(() => Option, (option) => option.questions)
+  @JoinTable()
+  options: Option[];
 
   @DeleteDateColumn()
   deleteAt: Date;
