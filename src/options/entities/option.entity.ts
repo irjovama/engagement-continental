@@ -13,6 +13,9 @@ export class Option {
   id: number;
 
   @Column()
+  index: number;
+
+  @Column()
   group: string;
 
   @Column()

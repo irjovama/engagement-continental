@@ -17,6 +17,9 @@ export class Question {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @Column()
+  index: number;
+
   @ManyToOne(() => Category, (category) => category.id)
   category: Category;
 
