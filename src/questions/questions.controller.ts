@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -15,6 +16,15 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 @Controller('categories/:categoryId/questions')
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
+
+  @Put(':id/options/:optGroup')
+  addOptions(
+    @Param('id') id: string,
+    @Param('categoryId') categoryId: string,
+    @Param('optGroup') optGroup: string,
+  ) {
+    return this.questionsService.addOptions(+id, +categoryId, optGroup);
+  }
 
   @Post()
   create(

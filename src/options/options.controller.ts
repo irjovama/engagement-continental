@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { OptionsService } from './options.service';
 import { CreateOptionDto } from './dto/create-option.dto';
 import { UpdateOptionDto } from './dto/update-option.dto';
@@ -13,8 +22,8 @@ export class OptionsController {
   }
 
   @Get()
-  findAll() {
-    return this.optionsService.findAll();
+  findAll(@Query('group') group: string) {
+    return this.optionsService.findAll({ group });
   }
 
   @Get(':id')

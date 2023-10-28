@@ -20,12 +20,17 @@ export class OptionsService {
     return { message: 'Se creo correctamente', id: created.id };
   }
 
-  async findAll() {
-    const options = await this.optionsRepository.find();
+  async findAll({ group }) {
+    const query = this.optionsRepository.createQueryBuilder('options');
 
-    if (!options) throw new BadRequestException('No hay options');
+    if (group != '') {
+      query.where('`group` = :group', { group });
+    }
 
-    return options;
+    const [data, totalItems] = await query.getManyAndCount();
+    if (!data) throw new BadRequestException('No hay options');
+
+    return { data, totalItems };
   }
 
   async findOne(id: number) {

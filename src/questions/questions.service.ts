@@ -5,13 +5,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './entities/question.entity';
 import { Repository } from 'typeorm/repository/Repository';
 import { CategoriesService } from 'src/categories/categories.service';
+import { OptionsService } from 'src/options/options.service';
 @Injectable()
 export class QuestionsService {
   constructor(
     @InjectRepository(Question)
     private readonly questionsRepository: Repository<Question>,
     private readonly categoriesService: CategoriesService,
+    private readonly optionsService: OptionsService,
   ) {}
+
+  async addOptions(id: number, categoryId: number, optGroup: string) {
+    const options = await this.optionsService.findAll({ group: optGroup });
+    const question = await this.findOne(id, '' + categoryId);
+    question.options = options.data;
+    const saved = await this.questionsRepository.save(question);
+
+    if (!saved)
+      throw new BadRequestException('No se pudo agregar las opciones');
+
+    return { message: 'Opciones agregadas' };
+  }
+
   async create(createQuestionDto: CreateQuestionDto, categoryId: string) {
     const category = await this.categoriesService.findOne(+categoryId);
 
@@ -31,6 +46,7 @@ export class QuestionsService {
     const skip = (query.page - 1) * query.limit;
     const [data, totalItems] = await this.questionsRepository
       .createQueryBuilder('questions')
+      .leftJoinAndSelect('questions.options', 'options')
       .innerJoinAndSelect('questions.category', 'category')
       .where('category.id = :categoryId', { categoryId })
       .skip(skip)
@@ -43,6 +59,7 @@ export class QuestionsService {
   async findOne(id: number, categoryId: string) {
     const question = await this.questionsRepository
       .createQueryBuilder('questions')
+      .leftJoinAndSelect('questions.options', 'options')
       .innerJoinAndSelect('questions.category', 'category')
       .where('questions.id = :id and category.id=:categoryId', {
         id,
