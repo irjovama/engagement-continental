@@ -23,7 +23,7 @@ export class OptionsService {
   async findAll({ group }) {
     const query = this.optionsRepository.createQueryBuilder('options');
 
-    if (group != '') {
+    if (group) {
       query.where('`group` = :group', { group });
     }
 
