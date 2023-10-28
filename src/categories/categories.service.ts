@@ -30,6 +30,9 @@ export class CategoriesService {
       .createQueryBuilder('categories')
       .leftJoinAndSelect('categories.questions', 'questions')
       .leftJoinAndSelect('questions.options', 'options')
+      .addOrderBy('categories.index', 'ASC')
+      .addOrderBy('questions.index', 'ASC')
+      .addOrderBy('options.index', 'ASC')
       .skip(skip)
       .take(query.limit)
       .getManyAndCount();
@@ -39,6 +42,9 @@ export class CategoriesService {
         .createQueryBuilder('questions')
         .leftJoinAndSelect('questions.options', 'options')
         .leftJoinAndSelect('questions.results', 'results')
+        .addOrderBy('categories.index', 'ASC')
+        .addOrderBy('questions.index', 'ASC')
+        .addOrderBy('options.index', 'ASC')
         .leftJoin('results.user', 'user')
         .where('user.token = :token', query)
         .getMany();
