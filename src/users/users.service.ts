@@ -57,6 +57,9 @@ export class UsersService {
       if (updateUserDto?.token) {
         updateUserDto.token = await this.hashEmail(updateUserDto.email);
       }
+      if (updateUserDto?.finishedAt) {
+        updateUserDto.finishedAt = new Date();
+      }
       await this.userRepository.update(id, updateUserDto);
       return { message: 'Se actualizó correctamente el usuario' };
     } catch (error) {

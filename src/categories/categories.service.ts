@@ -37,6 +37,23 @@ export class CategoriesService {
       .take(query.limit)
       .getManyAndCount();
     const totalPages = Math.ceil(totalItems / query.limit);
+    if (query?.results) {
+      console.log('entro');
+      data2 = await this.questionsRepository
+        .createQueryBuilder('questions')
+        .leftJoinAndSelect('questions.options', 'options')
+        .leftJoinAndSelect('questions.results', 'results')
+        .addOrderBy('questions.index', 'ASC')
+        .addOrderBy('options.index', 'ASC')
+        .getMany();
+      for (let index in data) {
+        for (let qindex in data[index].questions) {
+          const id = data[index].questions[qindex].id;
+          const data2Question = data2.find((d2) => d2.id === id);
+          data[index].questions[qindex].results = data2Question?.results ?? [];
+        }
+      }
+    }
     if (query?.token) {
       data2 = await this.questionsRepository
         .createQueryBuilder('questions')

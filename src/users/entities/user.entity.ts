@@ -25,6 +25,9 @@ export class User {
   token: string;
 
   @Column()
+  finishedAt: Date;
+
+  @Column()
   modality: string;
 
   @DeleteDateColumn()
