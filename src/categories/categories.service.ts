@@ -42,7 +42,6 @@ export class CategoriesService {
         .createQueryBuilder('questions')
         .leftJoinAndSelect('questions.options', 'options')
         .leftJoinAndSelect('questions.results', 'results')
-        .addOrderBy('categories.index', 'ASC')
         .addOrderBy('questions.index', 'ASC')
         .addOrderBy('options.index', 'ASC')
         .leftJoin('results.user', 'user')
