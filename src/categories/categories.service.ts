@@ -31,8 +31,11 @@ export class CategoriesService {
       .leftJoinAndSelect('categories.questions', 'questions')
       .leftJoinAndSelect('questions.options', 'options')
       .addOrderBy('categories.index', 'ASC')
+      .addOrderBy('categories.id', 'ASC')
       .addOrderBy('questions.index', 'ASC')
+      .addOrderBy('questions.id', 'ASC')
       .addOrderBy('options.index', 'ASC')
+      .addOrderBy('options.id', 'ASC')
       .skip(skip)
       .take(query.limit)
       .getManyAndCount();
@@ -44,7 +47,9 @@ export class CategoriesService {
         .leftJoinAndSelect('questions.options', 'options')
         .leftJoinAndSelect('questions.results', 'results')
         .addOrderBy('questions.index', 'ASC')
+        .addOrderBy('questions.id', 'ASC')
         .addOrderBy('options.index', 'ASC')
+        .addOrderBy('options.id', 'ASC')
         .getMany();
       for (let index in data) {
         for (let qindex in data[index].questions) {
