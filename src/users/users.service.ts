@@ -25,6 +25,8 @@ export class UsersService {
     const skip = (query.page - 1) * query.limit;
     const [data, totalItems] = await this.userRepository
       .createQueryBuilder('users')
+      .leftJoinAndSelect('users.results', 'results')
+      .leftJoinAndSelect('results.question', 'question')
       .skip(skip)
       .take(query.limit)
       .getManyAndCount();
