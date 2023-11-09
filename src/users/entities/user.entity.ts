@@ -52,7 +52,25 @@ export class User {
   grupoOcupacionalNivel2: string;
 
   @Column()
+  genero: string;
+
+  @Column()
+  fechaDeIngreso: string;
+
+  @Column()
+  tipoDeContrato: string;
+
+  @Column()
   anosEnLaOrganizacion: string;
+
+  @Column()
+  tiempoDeServicioAnos: string;
+
+  @Column()
+  tiempodeServicioMeses: string;
+
+  @Column()
+  tiempoDeServicioDias: string;
 
   @Column()
   edad: string;
