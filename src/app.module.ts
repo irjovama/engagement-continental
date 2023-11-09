@@ -8,6 +8,7 @@ import { ResultsModule } from './results/results.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
 import { OptionsModule } from './options/options.module';
+import { MailsModule } from './mails/mails.module';
 config();
 
 @Module({
@@ -28,6 +29,7 @@ config();
     CategoriesModule,
     ResultsModule,
     OptionsModule,
+    MailsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
