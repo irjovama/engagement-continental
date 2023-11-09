@@ -29,7 +29,7 @@ export class MailsService {
       from: 'bienestarytalento@continental.edu.pe',
       to: destinatario,
       subject: asunto,
-      text: mensaje,
+      html: mensaje,
     };
 
     return await this.transporter.sendMail(mailOptions);
