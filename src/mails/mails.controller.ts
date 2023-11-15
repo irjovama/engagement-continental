@@ -18,7 +18,7 @@ export class MailsController {
     @Body('email') destinatario: string,
     @Body('token') token: string,
   ) {
-    const asunto = '📣 Encuesta de Compromiso 2023 -2';
+    const asunto = '📣 Encuesta de Engagement y Clima 2023 -2';
     const mensaje = `<p>Buenas tardes a todos y todas,</p>
 <p>En Continental valoramos la opinión de nuestros colaboradores y nos esforzamos por crear un entorno de trabajo positivo y centrado en las personas. Para lograrlo, es fundamental entender tus necesidades, expectativas y sugerencias.</p>
 <p>Por esta razón, te invitamos a realizar la <strong>Encuesta de Engagement 2023-2</strong>, la cual nos ayudará a medir el nivel de compromiso y clima de nuestros colaboradores en relación con su trabajo y con la organización. Tus respuestas son completamente <strong>anónimas y confidenciales</strong>, por lo que te animamos a ser lo más honesto posible. </p>
