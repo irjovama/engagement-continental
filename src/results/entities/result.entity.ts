@@ -15,7 +15,7 @@ export class Result {
   @ManyToOne(() => Question, (question) => question.id)
   question: Question;
 
-  @Column()
+  @Column({ type: 'text' })
   value: string;
 
   @ManyToOne(() => User, (user) => user.id)
